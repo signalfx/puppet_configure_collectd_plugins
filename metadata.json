@@ -1,15 +1,27 @@
 {
+  "name": "signalfx-configure_collectd_plugins",
+  "version": "0.1.0",
   "author": "Uday Sagar Shiramshetty",
+  "license": "Apache 2.0",
+  "summary": "A puppet module to enable a collection of collectd configs that work well with SignalFx",
+  "source": "https://github.com/signalfx/puppet_configure_plugins",
+  "project_page": "https://github.com/signalfx/puppet_configure_plugins",
+  "issues_url": "https://github.com/signalfx/puppet_configure_plugins/issues",
   "dependencies": [
-    {"name": "pdxcat/collectd"},
-    {"name":"puppetlabs/stdlib","version_requirement":">= 3.0.0"},
+    {"name":"pdxcat/collectd","version_requirement":">= 4.0.0"},
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
     {"name":"puppetlabs/concat","version_requirement":">= 1.0.4"}
   ],
-  "license": "",
-  "name": "signalfx-configure_plugins",
   "operatingsystem_support": [
     {
-      "operatingsystem": "RedHat",
+      "operatingsystem": "Amazon",
+      "operatingsystemrelease": [
+        "2015.03",
+        "2014.09"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "5",
         "6",
@@ -21,14 +33,12 @@
       "operatingsystemrelease": [
         "12.04",
         "14.04",
-        "14.10",
         "15.04"
       ]
     }
   ],
-  "project_page": "https://github.com/signalfx/puppet_configure_plugins",
   "requirements": [
-        {
+    {
       "name": "pe",
       "version_requirement": ">= 3.2.0"
     },
@@ -36,8 +46,5 @@
       "name": "puppet",
       "version_requirement": ">= 3.2.0"
     }
-  ],
-  "source": "https://github.com/signalfx/puppet_configure_plugins",
-  "summary": "A puppet module to enable a collection of collectd configs that work well with SignalFx.",
-  "version": "0.1.0"
+  ]
 }

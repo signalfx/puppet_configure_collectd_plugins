@@ -1,7 +1,9 @@
-class configure_plugins (
+class configure_collectd_plugins (
 
 	$log_file = present,
-        $cpu = present,
+        $aggregation = present,
+	$chain = present,
+	$cpu = present,
         $cpufreq = present,
         $df = present,
         $load = present,
@@ -14,7 +16,7 @@ class configure_plugins (
 
 ){
 	include 'collectd'
-
+        
 	class { 'collectd::plugin::cpu':
                 ensure => $cpu,
         }
@@ -46,24 +48,59 @@ class configure_plugins (
                 log_timestamp => true
         }
 	
+	collectd::plugin::aggregation::aggregator {
+  		'cpu':
+    			ensure		 => $aggregation,
+			plugin           => 'cpu',
+    			type             => 'cpu',
+    			groupby          => ["Host", "TypeInstance",],
+    			calculateaverage => true,
+			calculatesum => true
+	}	
+
+	class { 'collectd::plugin::chain':
+		ensure	      => $chain,
+    		chainname     => "PostCache",
+    		defaulttarget => "write",
+    		rules         => [
+      		{
+        		'match'   => {
+          		'type'    => 'regex',
+          		'matches' => {
+            		'Plugin'         => "^cpu$",
+          		},
+        	},
+        	'targets' => [
+          	{
+            		'type'       => "write",
+            		'attributes' => {
+              		"Plugin" => "aggregation",
+            		},
+          	},
+          	{
+            	'type' => "stop",
+          	},
+        	],
+      		},
+    		],
+  	}	
+
 	class { 'collectd::plugin::disk':
 		ensure => $disk,
-		disks  => ["/^loop\d+$/", "/^dm-\d+$/"],
+		disks  => ["/^loop\\d+$/", "/^dm-\\d+$/"],
 		ignoreselected => true
 	}
 
 	class { 'collectd::plugin::interface':
 		ensure => $interface,
-		interfaces     => ['/^lo\d*$/', "/^docker.*/", "/^t(un|ap)\d*$/", "/^veth.*$/"],
+		interfaces     => ['/^lo\\d*$/', "/^docker.*/", "/^t(un|ap)\\d*$/", "/^veth.*$/"],
 		ignoreselected => true
 	}
 
-# This plugin is not available in pdxcat/collectd module on puppetforge
-# I will have to try alternate solutions
-#	class { 'collectd::plugin::protocols':
-#		values => ["Icmp:InDestUnreachs", "Tcp:CurrEstab", "Tcp:OutSegs", "Tcp:RetransSegs", "TcpExt:DelayedACKs", "TcpExt:DelayedACKs", "/Tcp:.*Opens/", "/^TcpExt:.*Octets/"],
-#		ignoreselected => false
-#	}
+	class { 'collectd::plugin::protocols':
+		values => ["Icmp:InDestUnreachs", "Tcp:CurrEstab", "Tcp:OutSegs", "Tcp:RetransSegs", "TcpExt:DelayedACKs", "TcpExt:DelayedACKs", "/Tcp:.*Opens/", "/^TcpExt:.*Octets/"],
+		ignoreselected => false
+	}
 
 	class { 'collectd::plugin::vmem':
 		ensure => $vmem,
