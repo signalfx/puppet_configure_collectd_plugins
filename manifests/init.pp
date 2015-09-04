@@ -42,11 +42,22 @@ class configure_collectd_plugins (
                 ensure => $uptime,
   }
 
-  class { 'collectd::plugin::logfile':
+  # log file location for centos 7
+  if $::operatingsystem == 'CentOS' and $::operatingsystemmajrelease == '7' {
+       class { 'collectd::plugin::logfile':
+                ensure        => $log_file,
+                log_level     => 'info',
+                log_file      => 'stdout',
+                log_timestamp => true
+        } 
+  }
+  else {
+       class { 'collectd::plugin::logfile':
                 ensure        => $log_file,
                 log_level     => 'info',
                 log_file      => '/var/log/signalfx-collectd.log',
                 log_timestamp => true
+        }
   }
 
   collectd::plugin::aggregation::aggregator {
