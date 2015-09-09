@@ -1,6 +1,6 @@
 {
   "name": "signalfx-configure_collectd_plugins",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Uday Sagar Shiramshetty",
   "summary": "A puppet module to enable a collection of collectd configs that work well with SignalFx",
   "license": "Apache-2.0",
