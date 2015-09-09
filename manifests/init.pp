@@ -17,6 +17,10 @@ class configure_collectd_plugins (
         $vmem = present
 
 ){
+  if versioncmp($::facterversion, '1.6.18') <= 0 and $::operatingsystem == 'Amazon' {
+    fail("Your facter version ${::facterversion} is not supported by our module. more info can be found at https://support.signalfx.com/hc/en-us/articles/205675369")
+  }else {
+  
   include 'collectd'
 
   class { 'collectd::plugin::cpu':
@@ -44,20 +48,20 @@ class configure_collectd_plugins (
 
   # log file location for centos 7
   if $::operatingsystem == 'CentOS' and $::operatingsystemmajrelease == '7' {
-       class { 'collectd::plugin::logfile':
+    class { 'collectd::plugin::logfile':
                 ensure        => $log_file,
                 log_level     => 'info',
                 log_file      => 'stdout',
                 log_timestamp => true
-        } 
+    }
   }
   else {
-       class { 'collectd::plugin::logfile':
+    class { 'collectd::plugin::logfile':
                 ensure        => $log_file,
                 log_level     => 'info',
                 log_file      => '/var/log/signalfx-collectd.log',
                 log_timestamp => true
-        }
+    }
   }
 
   collectd::plugin::aggregation::aggregator {
@@ -117,5 +121,6 @@ class configure_collectd_plugins (
   class { 'collectd::plugin::vmem':
     ensure  => $vmem,
     verbose => false
+  }
   }
 }
