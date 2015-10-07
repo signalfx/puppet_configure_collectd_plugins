@@ -11,13 +11,21 @@
 
 ## Overview
 
-The configure_collectd_plugins module enables a collection of collectd configs that work well with SignalFx.
+The configure_collectd_plugins module enables and configures a set of collectd plugins that work well with [SignalFx](http://signalfx.com).
+
+This is one of three modules provided by SignalFx for managing collectd. See [Module Description](#module-description). 
 
 ## Module Description
 
-Collectd is a system statistics collection daemon. This module configures the collectd plugins like cpu, df, disk, interface etc with appropriate values so that you can collect only the interesting statistics.
+Collectd is a system statistics collection daemon. This module configures collectd plugins to collect useful and interesting metrics about your system.
 
-Once you have installed this module, you may proceed to install [send_collectd_metrics](https://github.com/signalfx/puppet_send_collectd_metrics) puppet module from SignalFx to send metrics to SignalFx in one single and easy step.
+This is one of three modules provided by SignalFx for managing collectd. 
+
+Module name | Description 
+------------| ------------
+[puppet_install_collectd](https://forge.puppetlabs.com/signalfx/install_collectd) | Install and stay up-to-date with SignalFx's latest build of collectd. 
+configure_collectd_plugins | Enable and configure a set of collectd plugins that work well with SignalFx. 
+[send_collectd_metrics](https://forge.puppetlabs.com/signalfx/send_collectd_metrics) | Configure collectd to send metrics to SignalFx. 
 
 ## Setup
 Install the latest release of configure_collectd_plugins module from SignalFx using:
@@ -27,14 +35,13 @@ puppet module install signalfx/configure_collectd_plugins
 
 ### What configure_collectd_plugins affects
 
-The configure_collectd_plugins module configures the collectd so that it can only collect the system statistics. To be able to send data to SignalFx, please proceed on to the [send_collectd_metrics](https://github.com/signalfx/puppet_send_collectd_metrics) puppet module from SignalFx.
+The configure_collectd_plugins module configures an existing instance of collectd to collect useful and interesting system metrics. You must have collectd installed in order to use this module. 
 
-It is recommended to include the [install_collectd](https://github.com/signalfx/puppet_install_collectd) module before this module if you don't have any existing collectd on your systems to get the latest collectd from SignalFx repositories.
+SignalFx provides additional modules to install collectd and send metrics to SignalFx. See [Module Description](#module-description). 
 
 ## Usage
 
-The configure_collectd_plugins takes a bunch of parameters which enable and disable the plugins.
-The default values to all the plugins are 'present'. You may change the value to 'absent' if you don't want any data to be collected by a plugin.
+The configure_collectd_plugins module accepts parameters that enable or disable each of the plugins that it configures. The default value for all parameters is 'present'. To disable data collection by a plugin, change the value of its named parameter to 'absent'. 
 
 ```shell
 class { 'configure_collectd_plugins':
@@ -54,7 +61,9 @@ class { 'configure_collectd_plugins':
 }
 ```
 
-We also support third party plugins which can be easily configured, the given values are the default values.
+You can also use this module to install collectd plugins to monitor third-party software. To install a plugin, add its configuration snippet to your manifest file, and replace default configuration values with values that make sense for your environment as necessary. 
+
+
 ### Apache
 ```shell
 class { 'configure_collectd_plugins::plugins::apache':
@@ -63,12 +72,21 @@ class { 'configure_collectd_plugins::plugins::apache':
 }
 ```
 
+Parameter | Description
+----------|------------
+instanceName | Appears as the dimension `plugin_instance` in SignalFx. 
+url | The URL at which the plugin can read the output of Apache's mod_status module. 
+
 ### Cassandra
 ```shell
 class { 'configure_collectd_plugins::plugins::cassandra':
   hostname => $::hostname
 }
 ```
+
+Parameter | Description
+----------|------------
+hostname | The name of the host running Cassandra. 
 
 ### Docker
 ```shell
@@ -83,12 +101,21 @@ class { 'configure_collectd_plugins::plugins::elasticsearch':
 }
 ```
 
+Parameter | Description
+----------|------------
+clustername | Appears as the dimension `plugin_instance` in SignalFx. 
+indexes | Indexes to monitor using this plugin. All indexes are monitored by default. 
+
 ### Kafka version 0.8.2.1 and up
 ```shell
 class { 'configure_collectd_plugins::plugins::kafka_82':
   hostname => $::hostname
 }
 ```
+
+Parameter | Description
+----------|------------
+hostname | The name of the host running Kafka. 
 
 ### Memcached
 ```shell
@@ -97,6 +124,11 @@ class { 'configure_collectd_plugins::plugins::memcached':
   port     => '11211'
 }
 ```
+
+Parameter | Description
+----------|------------
+hostname | Name of the host on which memcached is running.
+port | Port on which memcached is running. 
 
 ### MySQL
 ```shell
@@ -108,12 +140,23 @@ class { 'configure_collectd_plugins::plugins::mysql':
 }
 ```
 
+Parameter | Description
+----------|------------
+hostname | Name of the host on which MySQL is running.
+user | Username that collectd can use to connect to MySQL.
+password | Password that collectd can use to connect to MySQL.
+database | Name of the MySQL database to monitor. 
+
 ### Nginx
 ```shell
 class { 'configure_collectd_plugins::plugins::nginx':
   url => 'http://localhost:80/nginx_status'
 }
 ```
+
+Parameter | Description
+----------|------------
+url | The URL at which collectd can read the output of nginx's stub status module. 
 
 ### PostgreSQL
 ```shell
@@ -124,6 +167,12 @@ class { 'configure_collectd_plugins::plugins::postgresql':
 }
 ```
 
+Parameter | Description
+----------|------------
+hostname | Name of the host on which PostgreSQL is running.
+user | Username that collectd can use to connect to PostgreSQL.
+password | Password that collectd can use to connect to PostgreSQL.
+
 ### Redis Master
 ```shell
 class { 'configure_collectd_plugins::plugins::redis_master':
@@ -131,6 +180,12 @@ class { 'configure_collectd_plugins::plugins::redis_master':
   port
 }
 ```
+Use this configuration for Redis masters. 
+
+Parameter | Description
+----------|------------
+hostname | Name of the host on which Redis is running.
+port | Port on which Redis is running. 
 
 ### Redis Slave
 ```shell
@@ -140,6 +195,13 @@ class { 'configure_collectd_plugins::plugins::redis_slave':
 }
 ```
 
+Use this configuration for Redis slaves. 
+
+Parameter | Description
+----------|------------
+hostname | Name of the host on which Redis is running.
+port | Port on which Redis is running. 
+
 ### Varnish
 ```shell
 class { 'configure_collectd_plugins::plugins::varnish':
@@ -147,6 +209,11 @@ class { 'configure_collectd_plugins::plugins::varnish':
   port
 }
 ```
+
+Parameter | Description
+----------|------------
+hostname | Name of the host on which Varnish is running.
+port | Port on which Varnish is running. 
 
 ### Zookeeper
 ```shell
