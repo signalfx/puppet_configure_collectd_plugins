@@ -21,7 +21,7 @@ class configure_collectd_plugins (
     fail("Your facter version ${::facterversion} is not supported by our module. more info can be found at https://support.signalfx.com/hc/en-us/articles/205675369")
   }else {
   
-  include 'collectd'
+  include 'install_collectd'
 
   class { 'collectd::plugin::cpu':
                 ensure => $cpu,
