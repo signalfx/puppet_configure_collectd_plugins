@@ -20,7 +20,7 @@ class configure_collectd_plugins (
   if versioncmp($::facterversion, '1.6.18') <= 0 and $::operatingsystem == 'Amazon' {
     fail("Your facter version ${::facterversion} is not supported by our module. more info can be found at https://support.signalfx.com/hc/en-us/articles/205675369")
   }else {
-  
+
   include 'install_collectd'
 
   class { 'collectd::plugin::cpu':
@@ -66,35 +66,35 @@ class configure_collectd_plugins (
 
   collectd::plugin::aggregation::aggregator {
       'cpu':
-          ensure                 => $aggregation,
-          plugin                 => 'cpu',
-          type                   => 'cpu',
-          groupby                => ['Host', 'TypeInstance',],
-          calculateaverage       => true,
-          calculatesum           => true
+          ensure           => $aggregation,
+          plugin           => 'cpu',
+          type             => 'cpu',
+          groupby          => ['Host', 'TypeInstance',],
+          calculateaverage => true,
+          calculatesum     => true
   }
 
   class { 'collectd::plugin::chain':
-        ensure             => $chain,
-        chainname          => 'PostCache',
-        defaulttarget      => 'write',
-        rules              => [
+        ensure        => $chain,
+        chainname     => 'PostCache',
+        defaulttarget => 'write',
+        rules         => [
           {
-            'match'   => {
-              'type'         => 'regex',
-              'matches'      => {
-                'Plugin'         => '^cpu$',
+            'match' => {
+              'type'    => 'regex',
+              'matches' => {
+                'Plugin' => '^cpu$',
               },
           },
-          'targets'   => [
+          'targets' => [
             {
                 'type'       => 'write',
                 'attributes' => {
-                  'Plugin'       => 'aggregation',
+                  'Plugin' => 'aggregation',
                 },
             },
             {
-              'type'         => 'stop',
+              'type' => 'stop',
             },
           ],
           },
