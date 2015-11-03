@@ -54,4 +54,101 @@ class { 'configure_collectd_plugins':
 }
 ```
 
+We also support third party plugins which can be easily configured, the given values are the default values.
+### Apache
+```shell
+class { 'configure_collectd_plugins::plugins::apache':
+  instanceName  => 'myapacheinstance',
+  url           => 'http://localhost/mod_status?auto'
+}
+```
 
+### Cassandra
+```shell
+class { 'configure_collectd_plugins::plugins::cassandra':
+  hostname => $::hostname
+}
+```
+
+### Docker
+```shell
+include 'configure_collectd_plugins::plugins::docker'
+```
+
+### Elasticsearch
+```shell
+class { 'configure_collectd_plugins::plugins::elasticsearch':
+  clustername         => 'elasticsearch',
+  indexes             => '_all'
+}
+```
+
+### Kafka version 0.8.2.1 and up
+```shell
+class { 'configure_collectd_plugins::plugins::kafka_82':
+  hostname => $::hostname
+}
+```
+
+### Memcached
+```shell
+class { 'configure_collectd_plugins::plugins::memcached':
+  hostname => '127.0.0.1',
+  port     => '11211'
+}
+```
+
+### MySQL
+```shell
+class { 'configure_collectd_plugins::plugins::mysql':
+  hostname,
+  user,
+  password,
+  database
+}
+```
+
+### Nginx
+```shell
+class { 'configure_collectd_plugins::plugins::nginx':
+  url => 'http://localhost:80/nginx_status'
+}
+```
+
+### PostgreSQL
+```shell
+class { 'configure_collectd_plugins::plugins::postgresql':
+  hostname,
+  user,
+  password
+}
+```
+
+### Redis Master
+```shell
+class { 'configure_collectd_plugins::plugins::redis_master':
+  hostname,
+  port
+}
+```
+
+### Redis Slave
+```shell
+class { 'configure_collectd_plugins::plugins::redis_slave':
+  hostname,
+  port
+}
+```
+
+### Varnish
+```shell
+class { 'configure_collectd_plugins::plugins::varnish':
+  hostname,
+  port
+}
+```
+
+### Zookeeper
+```shell
+include 'configure_collectd_plugins::plugins::zookeeper'
+```
