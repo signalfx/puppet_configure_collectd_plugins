@@ -1,6 +1,6 @@
 {
   "name": "signalfx-configure_collectd_plugins",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "author": "Uday Sagar Shiramshetty",
   "summary": "A puppet module to enable a collection of collectd configs that work well with SignalFx",
   "license": "Apache-2.0",
@@ -43,6 +43,7 @@
     }
   ],
   "dependencies": [
+    {"name":"signalfx/install_collectd","version_requirement":">= 0.1.5"},
     {"name":"puppet/collectd","version_requirement":">= 4.0.0"},
     {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0"},
     {"name":"puppetlabs/concat","version_requirement":">= 1.0.4"}
