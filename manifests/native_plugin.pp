@@ -19,8 +19,9 @@ define configure_collectd_plugins::native_plugin (
   if $::osfamily == 'RedHat' and $package_name != '' {
     if ! defined( Package[$package_name] ) {
     package { $package_name:
-      ensure => present,
-      before => File["load ${plugin_file_name} plugin"]
+      ensure  => present,
+      before  => File["load ${plugin_file_name} plugin"],
+      require => Package[$install_collectd::repo_params::repo_name]
     }
     }
   }
