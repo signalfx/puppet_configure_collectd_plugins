@@ -1,6 +1,6 @@
 {
   "name": "signalfx-configure_collectd_plugins",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "Uday Sagar Shiramshetty",
   "summary": "A puppet module to enable a collection of collectd configs that work well with SignalFx",
   "license": "Apache-2.0",
@@ -8,6 +8,13 @@
   "project_page": "https://github.com/signalfx/puppet_configure_collectd_plugins",
   "issues_url": "https://github.com/signalfx/puppet_configure_collectd_plugins/issues",
   "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "7",
+        "8"
+      ]
+    },
     {
       "operatingsystem": "Amazon",
       "operatingsystemrelease": [
