@@ -10,7 +10,7 @@ class configure_collectd_plugins::plugins::mongodb (
 ) {
 
   if $::osfamily == 'RedHat' {
-    Exec { 'install epel-release':
+    Exec['install epel-release'] {
       command => 'yum install -y epel-release',
       before  => Package['python-pip']
     }
