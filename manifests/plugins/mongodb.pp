@@ -9,8 +9,10 @@ class configure_collectd_plugins::plugins::mongodb (
   $instance
 ) {
 
+  Exec { path => [ '/bin/', '/sbin/' , '/usr/bin/', '/usr/sbin/' ] }
+
   if $::osfamily == 'RedHat' {
-    Exec['install epel-release'] {
+    exec {'install epel-release': 
       command => 'yum install -y epel-release',
       before  => Package['python-pip']
     }
