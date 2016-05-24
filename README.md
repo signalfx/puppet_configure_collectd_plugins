@@ -1,5 +1,6 @@
 # puppet_configure_collectd_plugins
 
+## This module has been deprecated! Find a new and up-to-date module at https://forge.puppet.com/signalfx/collectd
 
 #### Table of Contents
 
